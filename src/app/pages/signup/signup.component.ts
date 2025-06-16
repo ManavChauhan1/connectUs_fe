@@ -29,4 +29,9 @@ export class SignupComponent {
       error: err => console.error(err)
     });
   }
+
+  redirectToLogin() {
+    this.router.navigate(['/login']);
+  }
+
 }

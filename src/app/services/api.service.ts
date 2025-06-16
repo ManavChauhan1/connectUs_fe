@@ -45,4 +45,8 @@ export class ApiService {
   likePost(id: string): Observable<any> {
     return this.http.get(`${this.BASE_URL}/like/${id}`, { withCredentials: true });
   }
+
+  checkAuth() {
+    return this.http.get(`${this.BASE_URL}/profile`, { withCredentials: true });
+  }
 }

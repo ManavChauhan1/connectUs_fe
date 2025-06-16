@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone: true,
@@ -17,7 +18,11 @@ export class ProfileComponent implements OnInit {
   loading = true;
   error = '';
 
-  constructor(private router: Router, private api: ApiService) {}
+  constructor(
+    private router: Router,
+    private api: ApiService,
+    private http: HttpClient 
+  ) {}
 
   ngOnInit(): void {
     this.api.getProfile().subscribe({
@@ -37,8 +42,8 @@ export class ProfileComponent implements OnInit {
     if (!this.createPostContent.trim() || !this.user) return;
 
     this.api.createPost({ content: this.createPostContent }).subscribe({
-      next: (post) => {
-        this.user.posts.unshift(post);
+      next: (res) => {
+        this.user.posts.unshift(res.post);
         this.createPostContent = '';
       },
       error: (err) => {
@@ -73,7 +78,31 @@ export class ProfileComponent implements OnInit {
   onImgError(event: Event): void {
     const img = event.target as HTMLImageElement;
     if (!img.src.includes('default.png')) {
-      img.src = '/assets/uploads/default.png';
+      img.src = '/default.png';
     }
   }
+  //Handling Image Upload
+  onImageSelected(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (!fileInput.files || fileInput.files.length === 0) return;
+
+    const file = fileInput.files[0];
+    const formData = new FormData();
+    formData.append('profilepic', file);
+
+    this.http.post<{ filename: string }>('/upload-profile', formData).subscribe({
+      next: (res) => {
+        this.user.profilepic = res.filename;
+        alert('Profile image updated!');
+      },
+      error: (err) => {
+        console.error('Upload error:', err);
+        alert('Failed to upload image.');
+      }
+    });
+  }
+
+  
 }
+
+
