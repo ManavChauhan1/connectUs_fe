@@ -1,0 +1,21 @@
+<div class="w-full min-h-screen bg-zinc-900 text-white p-10">
+  <h3 class="text-3xl mb-5">Create Account</h3>
+  <form  (ngSubmit) = "onSubmit()">
+    <input class="block mb-4 w-full px-3 py-2 rounded-md outline-none bg-transparent border-2 border-zinc-800"
+           type="text" placeholder="Name" name="name" [(ngModel)]="form.name" required>
+
+    <input class="block mb-4 w-full px-3 py-2 rounded-md outline-none bg-transparent border-2 border-zinc-800"
+           type="text" placeholder="User Name" name="username" [(ngModel)]="form.username" required>
+
+    <input class="block mb-4 w-full px-3 py-2 rounded-md outline-none bg-transparent border-2 border-zinc-800"
+           type="text" placeholder="Age" name="age" [(ngModel)]="form.age" required>
+
+    <input class="block mb-4 w-full px-3 py-2 rounded-md outline-none bg-transparent border-2 border-zinc-800"
+           type="email" placeholder="Email" name="email" [(ngModel)]="form.email" required>
+
+    <input class="block mb-6 w-full px-3 py-2 rounded-md outline-none bg-transparent border-2 border-zinc-800"
+           type="password" placeholder="Password" name="password" [(ngModel)]="form.password" required>
+
+    <button class="px-5 py-2 rounded-md bg-blue-500" type="submit">Create Account</button>
+  </form>
+</div>

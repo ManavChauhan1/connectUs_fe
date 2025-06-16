@@ -1,0 +1,25 @@
+<!-- <div class="w-full min-h-screen bg-zinc-900 text-white p-10">
+  <h3 class="text-3xl mb-5">Login Your Account</h3>
+  <form (ngSubmit)="onLogin()">
+    <input class="block mb-4 w-full px-3 py-2 rounded-md outline-none bg-transparent border-2 border-zinc-800"
+       [(ngModel)]="form.email" name="email" placeholder="Email" class="input" required />
+    <input class="block mb-6 w-full px-3 py-2 rounded-md outline-none bg-transparent border-2 border-zinc-800" [(ngModel)]="form.password" name="password" type="password" placeholder="Password" class="input" required />
+    <input type="submit" value="Login" class="px-5 py-2 rounded-md bg-blue-500 mt-3" />
+  </form>
+</div> -->
+
+
+<div class="w-full min-h-screen bg-zinc-900 text-white p-10">
+  <h3 class="text-3xl mb-5">Login Your Account</h3>
+  <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+    <input class="block mb-4 w-full px-3 py-2 rounded-md outline-none bg-transparent border-2 border-zinc-800"
+           type="text" placeholder="Email" name="email" [(ngModel)]="form.email" required>
+
+    <input class="block mb-6 w-full px-3 py-2 rounded-md outline-none bg-transparent border-2 border-zinc-800"
+           type="password" placeholder="Password" name="password" [(ngModel)]="form.password" required>
+
+    <button class="px-5 py-2 rounded-md bg-blue-500" type="submit">Login</button>
+  </form>
+</div>
+
+
