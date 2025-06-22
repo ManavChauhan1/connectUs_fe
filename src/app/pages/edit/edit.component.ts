@@ -52,6 +52,7 @@ export class EditComponent implements OnInit {
 
   onLogout() {
     this.api.logout().subscribe(() => {
+      localStorage.removeItem('token');
       this.router.navigate(['/login']);
     });
   }

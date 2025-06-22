@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RegisterSchema } from '../../zod-schemas/register.schema';
 
 @Component({
   standalone: true,
@@ -23,15 +24,36 @@ export class SignupComponent {
   constructor(private api: ApiService, private router: Router) {}
 
   onSubmit() {
-    console.log(this.form);
+
+    const result = RegisterSchema.safeParse(this.form);
+    if (!result.success) {
+      //Showing the First error
+      const firstError = result.error.issues[0]?.message || 'Invalid input';
+      alert(firstError);
+      return;
+    }
+
+    const { name, email, username, age, password } = this.form;
+
+    if (!name || !email || !username || !age || !password) {
+      alert('Please fill in all the fields.');
+      return;
+    }
+
     this.api.register(this.form).subscribe({
-      next: () => this.router.navigate(['/login']),
-      error: err => console.error(err)
+      next: (res) => {
+        console.log("Registration Successful..:", res);
+        localStorage.setItem('token', res.token);
+        this.router.navigate(['/profile'])
+      },
+      error: (err) => {
+        console.log("Here")
+        console.error(err)
+      }
     });
   }
 
   redirectToLogin() {
     this.router.navigate(['/login']);
   }
-
 }

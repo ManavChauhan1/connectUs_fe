@@ -4,6 +4,7 @@ import { ApiService } from '../../services/api.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   standalone: true,
@@ -17,6 +18,7 @@ export class ProfileComponent implements OnInit {
   createPostContent = '';
   loading = true;
   error = '';
+  baseUrl = environment.apiUrl;
 
   constructor(
     private router: Router,
@@ -70,16 +72,16 @@ export class ProfileComponent implements OnInit {
 
   onLogout(): void {
     this.api.logout().subscribe({
-      next: () => this.router.navigate(['/login']),
+      next: () => {this.router.navigate(['/login'])
+              localStorage.removeItem('token');
+      },
       error: () => this.router.navigate(['/login']) // fallback
     });
   }
 
   onImgError(event: Event): void {
     const img = event.target as HTMLImageElement;
-    if (!img.src.includes('default.png')) {
-      img.src = '/default.png';
-    }
+    img.src = '/default.png';
   }
   //Handling Image Upload
   onImageSelected(event: Event) {
@@ -90,7 +92,7 @@ export class ProfileComponent implements OnInit {
     const formData = new FormData();
     formData.append('profilepic', file);
 
-    this.http.post<{ filename: string }>('/upload-profile', formData).subscribe({
+    this.api.uploadProfilePic(formData).subscribe({
       next: (res) => {
         this.user.profilepic = res.filename;
         alert('Profile image updated!');
@@ -101,8 +103,6 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
-
-  
 }
 
 

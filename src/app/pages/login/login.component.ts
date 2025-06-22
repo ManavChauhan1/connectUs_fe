@@ -19,17 +19,19 @@ export class LoginComponent {
 
   constructor(private api: ApiService, private router: Router) {}
 
-  onLogin() {
+  onLogin(): void {
     console.log('Login Form Submitted:', this.form);
 
     this.api.login(this.form).subscribe({
       next: (res) => {
-        console.log('Login successful:', res);
+        // console.log('Login successful:', res);
+        // console.log("token:", res.token);
+        localStorage.setItem('token', res.token); //Setting Cookie in browser
         this.router.navigate(['/profile']);
       },
       error: (err) => {
         console.error('Login failed:', err);
-        alert('Login failed. Please check your credentials.');
+        alert(err.error?.message ||'Login failed. Please check your credentials.');
       }
     });
   }
