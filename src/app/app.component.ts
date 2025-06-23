@@ -16,8 +16,11 @@ export class AppComponent implements OnInit{
   ngOnInit(){
     this.api.checkAuth().subscribe({
       next: (res: any) => {
+        const currentRoute = this.router.url;
+        // console.log(this.router.url);
         if (res && res.user && res.user._id) {
-          this.router.navigate(['/profile']);
+          if(currentRoute === '/' || currentRoute === '/login')
+            this.router.navigate(['/profile']);
         } else {
           this.router.navigate(['/login']);
         }

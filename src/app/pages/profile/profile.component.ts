@@ -54,6 +54,22 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+onDeleteProfile():void{
+  if(confirm('Are you sure you want to delete your profile? This action is irreversible')){
+    this.api.deleteProfile().subscribe({
+      next: () => {
+        localStorage.removeItem('token');
+        this.router.navigate(['/login']);
+        alert('Account Deleted..');
+      },
+      error: (err) => {
+        console.log(err);
+        alert('Failed to delete account.');
+      }
+    })
+  }
+}
+
   toggleLike(post: any) {
     this.api.likePost(post._id).subscribe({
       next: (res) => {

@@ -61,6 +61,22 @@ export class ApiService {
     );
   }
 
+  //Getting Feeds
+  getFeed(): Observable<any>{
+    return this.http.get(`${this.BASE_URL}/feed`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  //Delete Profile
+  deleteProfile(): Observable<any>{
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`
+    };
+    return this.http.delete(`${this.BASE_URL}/delete`, { headers });
+  }
+
   checkAuth() {
     return this.http.get(`${this.BASE_URL}/profile`, { headers: this.getAuthHeaders() });
   }
