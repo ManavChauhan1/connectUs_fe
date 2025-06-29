@@ -6,11 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private BASE_URL = 'http://localhost:3000'; // Change if your backend URL differs
+  private BASE_URL = 'http://localhost:3000'; // backend URL
 
   constructor(private http: HttpClient) {}
 
-  //Generatig Headers
+  //Generating Headers
   private getAuthHeaders(): HttpHeaders {
     return new HttpHeaders({
       Authorization: `Bearer ${localStorage.getItem('token') || ''}`

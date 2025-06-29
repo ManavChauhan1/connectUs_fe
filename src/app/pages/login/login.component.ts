@@ -37,6 +37,10 @@ export class LoginComponent {
   }
 
   redirectToSignup() {
-  this.router.navigate(['/']);
-}
+    this.router.navigate(['/']);
+  }
+
+  redirectToQRLogin(){
+    this.router.navigate(['/qr-login']);
+  }
 }

@@ -52,22 +52,22 @@ export class FeedComponent implements OnInit {
   }
 
   goToProfile(): void {
-  this.router.navigate(['/profile']);
-}
+    this.router.navigate(['/profile']);
+  }
 
-editProfile(): void {
-  this.router.navigate(['/edit-profile']); // Or any route you use for editing
-}
+  editProfile(): void {
+    this.router.navigate(['/edit-profile']); 
+  }
 
-logout(): void {
-  this.api.logout().subscribe({
-    next: () => {
-      localStorage.removeItem('token');
-      this.router.navigate(['/login']);
-    },
-    error: () => {
-      this.router.navigate(['/login']);
-    }
+  logout(): void {
+    this.api.logout().subscribe({
+      next: () => {
+        localStorage.removeItem('token');
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        this.router.navigate(['/login']);
+      }
     });
   }
 }

@@ -19,6 +19,7 @@ export class ProfileComponent implements OnInit {
   loading = true;
   error = '';
   baseUrl = environment.apiUrl;
+  qrCode: string = '';
 
   constructor(
     private router: Router,
@@ -31,6 +32,7 @@ export class ProfileComponent implements OnInit {
       next: (res) => {
         this.user = res.user;
         this.loading = false;
+        this.fetchQRCode();
       },
       error: (err) => {
         this.error = 'Failed to load profile';
@@ -54,21 +56,48 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-onDeleteProfile():void{
-  if(confirm('Are you sure you want to delete your profile? This action is irreversible')){
-    this.api.deleteProfile().subscribe({
-      next: () => {
-        localStorage.removeItem('token');
-        this.router.navigate(['/login']);
-        alert('Account Deleted..');
+  onDeleteProfile():void{
+    if(confirm('Are you sure you want to delete your profile? This action is irreversible')){
+      this.api.deleteProfile().subscribe({
+        next: () => {
+          localStorage.removeItem('token');
+          this.router.navigate(['/login']);
+          alert('Account Deleted..');
+        },
+        error: (err) => {
+          console.log(err);
+          alert('Failed to delete account.');
+        }
+      })
+    }
+  }
+
+  goToFeed():void{
+    this.router.navigate(['/feed']);
+  }
+
+    // ✅ Fetch QR code
+  fetchQRCode(): void {
+    const userId = this.user?._id;
+    if (!userId) return;
+
+    this.http.post<{ qrCode: string }>(`${this.baseUrl}/generate-qr`, { userId }).subscribe({
+      next: (res) => {
+        this.qrCode = res.qrCode;
       },
       error: (err) => {
-        console.log(err);
-        alert('Failed to delete account.');
+        console.error('QR fetch failed:', err);
       }
-    })
+    });
   }
-}
+
+  downloadQR(): void {
+    if (!this.qrCode) return;
+    const a = document.createElement('a');
+    a.href = this.qrCode;
+    a.download = 'login-qr-code.png';
+    a.click();
+  }
 
   toggleLike(post: any) {
     this.api.likePost(post._id).subscribe({
@@ -120,5 +149,3 @@ onDeleteProfile():void{
     });
   }
 }
-
-
