@@ -1,6 +1,14 @@
 <div class="flex flex-col items-center justify-center min-h-screen bg-zinc-900 text-white p-6">
-  <h2 class="text-2xl mb-5">Scan Your Login QR</h2>
+  <h2 class="text-2xl mb-5">Scan Your {{ selectedMethod === 'qr' ? 'QR' : 'Barcode' }} to Login</h2>
 
+  <div class="mb-4 space-x-4">
+    <button (click)="switchMethod('qr')" [disabled]="selectedMethod === 'qr'"
+      class="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 transition">Use QR</button>
+    <button (click)="switchMethod('barcode')" [disabled]="selectedMethod === 'barcode'"
+      class="px-4 py-2 bg-green-600 rounded hover:bg-green-700 transition">Use Barcode</button>
+  </div>
+
+  <!-- Div to Scan the Code -->
   <div class="w-[300px] h-[300px] border-4 border-blue-500 relative rounded-md overflow-hidden">
     <zxing-scanner
       class="absolute top-0 left-0 w-full h-full"
@@ -8,6 +16,15 @@
       [autofocus]="true"
     ></zxing-scanner>
   </div>
+
+  <!-- Div to Upload the Code -->
+   <div class="mt-4 text-center">
+    <label class="text-sm text-white block mb-2">Or Upload QR/Barcode Image:</label>
+    <input type="file"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            class="text-white bg-zinc-800 border border-zinc-600 rounded p-1 text-sm cursor-pointer" />
+    </div>
 
   <p *ngIf="error" class="text-red-500 mt-4">{{ error }}</p>
 

@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
   error = '';
   baseUrl = environment.apiUrl;
   qrCode: string = '';
+  barcode: string = '';
 
   constructor(
     private router: Router,
@@ -32,7 +33,7 @@ export class ProfileComponent implements OnInit {
       next: (res) => {
         this.user = res.user;
         this.loading = false;
-        this.fetchQRCode();
+        this.fetchQRCodeAndBarcode();;
       },
       error: (err) => {
         this.error = 'Failed to load profile';
@@ -76,17 +77,20 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/feed']);
   }
 
-    // ✅ Fetch QR code
-  fetchQRCode(): void {
+    // Fetch QR/Bar code
+  fetchQRCodeAndBarcode(): void {
     const userId = this.user?._id;
     if (!userId) return;
 
-    this.http.post<{ qrCode: string }>(`${this.baseUrl}/generate-qr`, { userId }).subscribe({
+    this.http.post<{ qrCode: string, barcode: string }>(`${this.baseUrl}/generate-qr`, { userId }).subscribe({
       next: (res) => {
         this.qrCode = res.qrCode;
+        this.barcode = res.barcode;
+        console.log("Bar Code is:", this.barcode);
+        console.log("QR Code is:", this.qrCode);
       },
       error: (err) => {
-        console.error('QR fetch failed:', err);
+        console.error('QR/Barcode fetch failed:', err);
       }
     });
   }
@@ -98,6 +102,13 @@ export class ProfileComponent implements OnInit {
     a.download = 'login-qr-code.png';
     a.click();
   }
+
+  downloadBarcode() {
+  const link = document.createElement('a');
+  link.href = this.barcode;
+  link.download = 'login-barcode.png';
+  link.click();
+}
 
   toggleLike(post: any) {
     this.api.likePost(post._id).subscribe({

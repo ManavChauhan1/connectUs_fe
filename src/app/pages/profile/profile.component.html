@@ -20,16 +20,34 @@
     <h3 class="text-3xl"><span class="font-light">Hello,</span> {{ user.name }} 👋🏻</h3>
   </div>
 
-    <!-- ✅ QR CODE SECTION -->
-  <div *ngIf="qrCode" class="mt-6">
+<div class="mt-6 flex flex-col md:flex-row gap-10 items-start md:items-center">
+  <!-- QR Code Card -->
+  <div class="bg-zinc-800 shadow-md rounded-md p-4 flex flex-col items-center w-60">
     <h4 class="text-lg text-zinc-300 mb-2">Your Login QR Code</h4>
-    <img [src]="qrCode" alt="QR Code" class="w-48 h-48 border border-zinc-700 rounded bg-white p-2">
-    <br>
+    <img [src]="qrCode"
+         alt="QR Code"
+         class="w-48 h-48 border border-zinc-700 rounded bg-white p-2 object-contain" />
     <button (click)="downloadQR()"
             class="mt-3 px-4 py-2 bg-blue-500 rounded-md text-sm">
       Download QR Code
     </button>
   </div>
+
+  <!-- Barcode Card -->
+  <div class="bg-zinc-800 shadow-md rounded-md p-4 flex flex-col items-center w-60">
+    <h4 class="text-lg text-zinc-300 mb-2">Your Login Barcode</h4>
+    <div class="w-48 h-48 flex items-center justify-center border border-zinc-700 rounded bg-white p-2">
+      <img [src]="barcode"
+           alt="Barcode"
+           class="max-h-20 object-contain" />
+    </div>
+    <button (click)="downloadBarcode()"
+            class="mt-3 px-4 py-2 bg-green-600 rounded-md text-sm">
+      Download Barcode
+    </button>
+  </div>
+</div>
+
 
   <h5 class="mb-5 mt-3">You can Create a New Post..</h5>
 
